@@ -1,0 +1,16 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.vscode/
+data/
+metastore_db/
+spark-warehouse/
+# Virtual environments
+.venv
+derby.log
+inventory.csv
+

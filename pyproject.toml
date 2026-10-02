@@ -1,0 +1,26 @@
+[project]
+name = "lakehouse-iceberg-glue"
+version = "0.1.0"
+description = "uv dependencies"
+readme = "README.md"
+authors = [
+    { name = "Shadow750amr" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "numpy==2.5.3",
+    "pandas==3.0.6",
+    "pandera>=0.33.1",
+    "py4j==0.10.9.7",
+    "pyarrow==25.0.1",
+    "pyspark==3.5.1",
+    "python-dateutil==2.9.0.post0",
+    "six==1.17.0",
+]
+
+[project.scripts]
+lakehouse-iceberg-glue = "lakehouse_iceberg_glue:main"
+
+[build-system]
+requires = ["uv_build>=0.12.22,<0.13.0"]
+build-backend = "uv_build"

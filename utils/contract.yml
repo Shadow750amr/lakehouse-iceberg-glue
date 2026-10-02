@@ -1,0 +1,43 @@
+version: 1.0
+dataset_name: "inventory_silver"
+description: "Base silver table for inventory data from erp source."
+
+schema:
+  - source_name: "costo"
+    target_name: "cost"
+    data_type: "decimal"
+    description: "Current cost (no conversion applied)"
+
+  - source_name: "descripcion"
+    target_name: "description"
+    data_type: "string"
+    description: "Product description"
+
+  - source_name: "fabricante"
+    target_name: "manufacterer"
+    data_type: "string"
+    description: "Manufacterer system code"
+
+  - source_name: "abc"
+    target_name: "abc_code"
+    data_type: "string"
+    description: "Product demand code ranging from a to d"
+ 
+  - source_name: "cat"
+    target_name: "catalog_code"
+    data_type: "string"
+    description: "Internal catalog code that helps to divide best-selling products and out of order products."
+ 
+  - source_name: "valor_inv_actual"
+    target_name: "inventory_current_value"
+    data_type: "decimal"
+    description: "Actual value in inventory"
+
+  - source_name: "fecha"
+    target_name: "creation_date"
+    data_type: "decimal"
+    description: "Actual value in inventory"
+  
+  
+  
+
