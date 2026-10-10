@@ -5,7 +5,7 @@ description: "Base silver table for inventory data from erp source."
 schema:
   - source_name: "costo"
     target_name: "cost"
-    data_type: "decimal"
+    data_type: "decimal(18,6)"
     description: "Current cost (no conversion applied)"
 
   - source_name: "descripcion"
@@ -30,12 +30,12 @@ schema:
  
   - source_name: "valor_inv_actual"
     target_name: "inventory_current_value"
-    data_type: "decimal"
+    data_type: "decimal(18,6)"
     description: "Actual value in inventory"
 
   - source_name: "fecha"
     target_name: "creation_date"
-    data_type: "decimal"
+    data_type: "timestamp"
     description: "Actual value in inventory"
   
   

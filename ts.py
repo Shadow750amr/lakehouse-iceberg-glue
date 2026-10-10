@@ -1,5 +1,5 @@
 from utils.spark import SparkIni
-from pyspark.sql import functions as sf
+from pyspark.sql import functions as F
 import datetime
 import logging
 
@@ -19,7 +19,6 @@ def run_silver():
         spark = connector.conn()
         logger.info("reading file(s)")
         df = spark.read.format("iceberg").load("glue_catalog.inventory.inventory_silver")
-        df.printSchema()
         df.show()
     except Exception as e:
         logger.error(f"An error ocurred")

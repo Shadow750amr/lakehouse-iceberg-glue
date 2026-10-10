@@ -13,4 +13,5 @@ spark-warehouse/
 .venv
 derby.log
 inventory.csv
-
+working_file_package.zip
+working_file_package/

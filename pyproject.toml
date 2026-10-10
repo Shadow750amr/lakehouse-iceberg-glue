@@ -1,13 +1,12 @@
 [project]
 name = "lakehouse-iceberg-glue"
 version = "0.1.0"
-description = "uv dependencies"
+description = "Pipelines PySpark con Iceberg y Glue"
 readme = "README.md"
-authors = [
-    { name = "Shadow750amr" }
-]
 requires-python = ">=3.12"
 dependencies = [
+    "boto3>=1.43.110",
+    "botocore>=1.43.110",
     "numpy==2.5.3",
     "pandas==3.0.6",
     "pandera>=0.33.1",
@@ -15,12 +14,10 @@ dependencies = [
     "pyarrow==25.0.1",
     "pyspark==3.5.1",
     "python-dateutil==2.9.0.post0",
+    "pyyaml>=6.0.3",
     "six==1.17.0",
+    "yml>=0.0.1",
 ]
 
-[project.scripts]
-lakehouse-iceberg-glue = "lakehouse_iceberg_glue:main"
-
-[build-system]
-requires = ["uv_build>=0.12.22,<0.13.0"]
-build-backend = "uv_build"
+[tool.uv]
+package = false

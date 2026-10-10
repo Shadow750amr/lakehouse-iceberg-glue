@@ -3,6 +3,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DecimalType, IntegerType, TimestampType, DateType, StringType
 import datetime
 import logging
+import yaml
 
 
 logging.basicConfig(level=logging.INFO)
@@ -13,30 +14,44 @@ month = yesterday.strftime('%m')
 year = yesterday.strftime('%Y')
 day = yesterday.strftime('%d')
 
-schema_dict = {"cost":DecimalType(18,6),
-                "description":StringType(),
-                        "manufacterer":StringType(),
-                            "abc_code":StringType(),
-                                "catalog_code": StringType(),
-                                 "inventory_current_value":DecimalType(18,6),
-                                 "creation_date": TimestampType(),
-                                  "ingestion_date": TimestampType()}
+
+with open('utils/contract.yml',"r", encoding="utf-8") as file:
+    contract = yaml.safe_load(file)
+    types_dict = {item['source_name']: item['data_type'] for item in contract['schema']}
+    names_dict = {item['source_name']: item['target_name'] for item in contract['schema']}
+    
 
 def run_silver():
+    '''
+    This function is the tranformation phase of the ETL and consist in the following steps:
+    - Casts fecha column into yyyy/mm/dd format
+    - Change data types into specific format using a contract defined in yaml (utils module)
+    - Rename dataframe into specific naming using the same contract defined in yaml.
+    '''
     try:  
         connector = SparkIni("LakehouseETL")
         spark = connector.conn()
 
         logger.info("reading file(s)")
 
+        #reading initial df
         initial_df = spark.read.parquet(f"s3a://erp/raw/consolidated/year={year}/month={month}/day={day}/")
-
-        select_exprs = [F.col(col_name).cast(target_type).alias(col_name) 
-                            if col_name in schema_dict else F.col(col_name)
-                                for col_name, target_type in schema_dict.items()]
-        casted_date = (initial_df.withColumn("",F.to_date(F.col("fecha"),"yyyyMMdd")).select(*select_exprs))
         
-        casted_date.writeTo("glue_catalog.inventory.inventory_silver").using("iceberg").createOrReplace()
+        #definining expressions to iterate over type dictionary and cast columns
+        types_exprs = [F.col(col_name).cast(target_type).alias(col_name)
+                            if col_name in types_dict else F.col(col_name)
+                                for col_name, target_type in types_dict.items()]
+
+        #applying date formating and using type dictionary to change data types
+        casted_df = (initial_df.withColumn("fecha",F.date_format(F.to_date(F.col("fecha"), "dd/MM/yyyy"), "yyyy-MM-dd")).select(*types_exprs))
+
+        #renaming columns with names dictionary
+        
+        renamed_df = casted_df.withColumnsRenamed(names_dict)
+
+        #writing to final destination
+        renamed_df.writeTo("glue_catalog.inventory.inventory_silver").using("iceberg").createOrReplace()
+
     except Exception as e:
         logger.error(f"An error ocurred")
         raise e
