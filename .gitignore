@@ -16,5 +16,4 @@ inventory.csv
 working_file_package.zip
 working_file_package/
 utils/spark.py
-
 inventory_2.csv

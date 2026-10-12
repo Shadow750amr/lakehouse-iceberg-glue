@@ -35,7 +35,7 @@ def run_silver():
         logger.info("reading file(s)")
 
         #reading initial df
-        initial_df = spark.read.parquet(f"s3a://erp/raw/consolidated/year={year}/month={month}/day={day}/")
+        initial_df = spark.read.parquet(f"s3a://erp-01-01/consolidated/year={year}/month={month}/day={day}/")
         
         #definining expressions to iterate over type dictionary and cast columns
         types_exprs = [F.col(col_name).cast(target_type).alias(col_name)

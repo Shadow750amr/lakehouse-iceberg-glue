@@ -17,3 +17,30 @@ Important to say this project was implemented using **https://floci.io/**, a loc
  ###
 1. Connect Power BI and analyze data at gold layer
 2. Model gold layers
+
+
+# Useful commands to this project
+
+zip -r ./working_file_package.zip .
+
+
+# lambda
+ aws lambda create-function \
+    --function-name working_file_lambda \
+    --runtime python3.11 \
+    --role arn:aws:iam::000000000000:user/working_file_lambda \
+    --handler lambda_function.lambda_handler \
+    --code S3Bucket=functions,S3Key=working_file_package.zip
+
+# step functions
+    aws stepfunctions create-state-machine \
+  --name "MiMaquinaDeEstadosCLI" \
+  --definition "file://state_machine.json" \
+  --role-arn "arn:aws:iam::000000000000:role/floci-execution-role" \
+  --type "STANDARD"
+# start step function
+  aws stepfunctions start-execution \   
+  --state-machine-arn "arn:aws:states:us-east-1:000000000000:stateMachine:MiMaquinaDeEstadosCLI" \                            
+  --input '{"mensaje": "Hola desde la CLI"}'
+
+
