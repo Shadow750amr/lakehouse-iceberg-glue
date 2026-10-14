@@ -43,4 +43,7 @@ zip -r ./working_file_package.zip .
   --state-machine-arn "arn:aws:states:us-east-1:000000000000:stateMachine:MiMaquinaDeEstadosCLI" \                            
   --input '{"mensaje": "Hola desde la CLI"}'
 
+aws s3 cp inventory_mock.csv s3://erp-01-01/raw/inventory/year=2026/month=10/day=13/inventory.csv
+
+
 

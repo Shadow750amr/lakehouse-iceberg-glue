@@ -1,4 +1,4 @@
-from utils.spark import SparkIni
+from glue_package.utils.spark import SparkIni
 from pyspark.sql import functions as F
 from pyspark.sql.types import DecimalType, IntegerType, TimestampType, DateType, StringType
 import datetime
