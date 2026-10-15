@@ -13,13 +13,3 @@ spark-warehouse/
 .venv
 derby.log
 inventory.csv
-working_file_package.zip
-working_file_package/
-<<<<<<< HEAD
-utils/spark.py
-inventory_2.csv
-main_package/
-
-=======
-inventory_2.csv
->>>>>>> aacb44a7713fd87315ca273818ac1517c784ab39
