@@ -1,4 +1,4 @@
-from utils.spark import SparkIni
+from glue_package.utils.spark import SparkIni
 import datetime
 import logging
 
@@ -17,8 +17,8 @@ def compaction():
         connector = SparkIni("LakehouseEtl")
         spark = connector.conn()
         logger.info("reading file(s)")
-        df = spark.read.csv(f"s3a://erp-01-01/raw/inventory/year={year}/month={month}/day={day}/*.csv",header=True)
-        df.coalesce(1).write.mode("overwrite").parquet(f"s3a://erp-01-01/consolidated/inventory/year={year}/month={month}/day={day}/")
+        df = spark.read.csv(f"s3://erp-01-01/raw/inventory/year={year}/month={month}/day={day}/*.csv",header=True)
+        df.coalesce(1).write.mode("overwrite").parquet(f"s3://erp-01-01/consolidated/inventory/year={year}/month={month}/day={day}/")
     except Exception as e:
         logger.error(f"An error ocurred")
         raise e
