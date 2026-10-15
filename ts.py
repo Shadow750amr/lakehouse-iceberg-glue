@@ -1,4 +1,4 @@
-from utils.spark import SparkIni
+from glue.utils.spark import SparkIni
 from pyspark.sql import functions as F
 import datetime
 import logging

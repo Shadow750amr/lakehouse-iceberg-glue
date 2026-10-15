@@ -1,4 +1,4 @@
-from utils.spark import SparkIni
+from glue_package.utils.spark import SparkIni
 import datetime
 import logging
 

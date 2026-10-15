@@ -14,7 +14,7 @@ Important to say this project was implemented using **https://floci.io/**, a loc
 
 
 ## Next steps and possible new features
- ###
+
 1. Connect Power BI and analyze data at gold layer
 2. Model gold layers
 
@@ -43,4 +43,7 @@ zip -r ./working_file_package.zip .
   --state-machine-arn "arn:aws:states:us-east-1:000000000000:stateMachine:MiMaquinaDeEstadosCLI" \                            
   --input '{"mensaje": "Hola desde la CLI"}'
 
+
+# some copy commands
+aws s3 cp data/inventory_mock.csv s3://erp-01-01/raw/inventory/year=2026/month=10/day=11/inventory.csv --profile new-profile-name
 

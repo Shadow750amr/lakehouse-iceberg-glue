@@ -1,4 +1,4 @@
-from src.bronze.upload_working_file import upload_file
+from glue.src.bronze.upload_working_file import upload_file
 import datetime
 
 yesterday = datetime.date.today() - datetime.timedelta(1)
