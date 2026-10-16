@@ -1,19 +1,14 @@
 from glue_package.utils.spark import SparkIni
-import datetime
-from zoneinfo import ZoneInfo
+from utils.timezone import get_time_zone
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# cdmx time zone
-cdmx_tz = ZoneInfo("America/Mexico_City")
-today = datetime.datetime.now(cdmx_tz).date()
-yesterday = today - datetime.timedelta(days=1)
+year = get_time_zone()["year"]
+month = get_time_zone()["month"]
+day= get_time_zone()["day"]
 
-month = yesterday.strftime('%m')
-year = yesterday.strftime('%Y')
-day = yesterday.strftime('%d')
 
 def compaction():
     try:  
