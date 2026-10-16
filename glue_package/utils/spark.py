@@ -169,9 +169,7 @@ class SparkIni:
 
         else:
             # CORREGIDO: Se asigna la sesión a self.spark_conn para AWS Glue / Cloud
-            self.spark_conn = SparkSession.builder.appName(
-                self.app_name
-            ).getOrCreate()
+            self.spark_conn = (SparkSession.builder.appName(self.app_name).config("spark.sql.session.timeZone", "America/Mexico_City").getOrCreate())
 
         return self.spark_conn
 
