@@ -1,13 +1,12 @@
 import logging
 import boto3
 from botocore.exceptions import ClientError
+from utils.timezone import get_time_zone
 import os
-import datetime
 
-yesterday = datetime.date.today() - datetime.timedelta(1)
-year = yesterday.strftime('%Y')
-month = yesterday.strftime('%m')
-day = yesterday.strftime('%d')
+year = get_time_zone()["year"]
+month = get_time_zone()["month"]
+day= get_time_zone()["day"]
 
 def upload_file(file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket
