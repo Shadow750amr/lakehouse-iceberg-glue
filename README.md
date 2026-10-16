@@ -4,7 +4,9 @@ The main purpose of this project is to desing and build a **lakehouse** and deve
 The benefits of this approach is to leverage the modern data architecture using cloud enviroments to analyze data at rest through datalakehouse approach.
 The main idea is to model this data using a medallion architecture and kimball approach in gold layer.
 
-> Tools used in this project
+>[!Tools used for this project]
+
+Important to say this project was implemented using **https://floci.io/**, a local emulator for cloud enviroments that works well with most functions and integrations for serverless projects prototypes. Also, it uses the AWS CLI that pretty much is the most essential needed toll for dev and test functions, buckets and IAM configurations.
 
 Important to say this project was implemented using **https://floci.io/**, a local emulator for cloud enviroments that works well with most functions and integrations for serverless projects prototypes.
 More ahead in the project I migrated this to AWS services.
