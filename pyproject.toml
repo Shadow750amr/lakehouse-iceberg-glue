@@ -9,7 +9,9 @@ description = "Pipelines PySpark con Iceberg y Glue"
 readme = "README.md"
 requires-python = ">=3.12"
 # Dejamos las dependencias de empaquetado totalmente vacías
-dependencies = []
+dependencies = [
+    "argparse>=1.4.0",
+]
 
 # Dependencias para desarrollo y ejecución local
 [tool.uv]

@@ -1,18 +1,17 @@
 from glue_package.utils.spark import SparkIni
 from pyspark.sql import functions as F
-from pyspark.sql.types import DecimalType, IntegerType, TimestampType, DateType, StringType
-import datetime
+from utils.timezone import get_time_zone
 import logging
 import yaml
-
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-yesterday = datetime.date.today() - datetime.timedelta(1)
-month = yesterday.strftime('%m')
-year = yesterday.strftime('%Y')
-day = yesterday.strftime('%d')
+year = get_time_zone()["year"]
+month = get_time_zone()["month"]
+day= get_time_zone()["day"]
+
+
 
 
 with open('utils/contract.yml',"r", encoding="utf-8") as file:
