@@ -1,6 +1,7 @@
 import argparse
 from datetime import date
 
+
 def cli_parser():
     ''' This function creates a parser that is used to simulate a sys.argv that takes the getResolved function in glue. 
         Kinda of a developer env for the glue getresolved option for managing dates.
