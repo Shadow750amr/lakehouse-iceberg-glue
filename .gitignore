@@ -13,3 +13,4 @@ spark-warehouse/
 .venv
 derby.log
 inventory.csv
+.env
