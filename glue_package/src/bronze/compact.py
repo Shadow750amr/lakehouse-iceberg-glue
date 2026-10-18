@@ -1,7 +1,7 @@
 from glue_package.utils.spark import SparkIni
-from utils.timezone import get_time_zone
-import logging
-from awsglue.utils import getResolvedOptions
+from glue_package.utils.timezone import get_time_zone
+import logging 
+from awsglue import getResolvedOptions
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
