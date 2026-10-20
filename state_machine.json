@@ -1,12 +1,20 @@
 {
-  "Comment": "Prueba local con Floci",
-  "StartAt": "InvocarLambda",
+  "Comment": "Automation workflow for lakehouse-iceberg-glue project",
+  "StartAt": "Compaction-job",
+  "TimeoutSeconds": 300,
   "States": {
-    "InvocarLambda": {
+    "Compaction-job": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:000000000000:function:mi-funcion-lambda",
+      "Resource": "arn:aws:states:::glue:startJobRun",
+      "Parameters": {
+        "JobName": "compact-job",
+        "Arguments": {
+          "--partition_day.$": "$.partition_day",
+          "--partition_month.$": "$.partition_month",
+          "--partition_year.$": "$.partition_year"
+        }
+      },
       "End": true
-      
     }
   }
 }
