@@ -7,7 +7,7 @@ def cli_parser():
         Kinda of a developer env for the glue getresolved option for managing dates.
         Otherwise it returns 
       '''
-    if 
+
     # Container
     parser = argparse.ArgumentParser(description="Mi script para procesar datos")
 
@@ -18,6 +18,7 @@ def cli_parser():
     args = parser.parse_args()
 
     
-    return args.execution_date
+    return print(args.execution_date)
+cli_parser()
 
 

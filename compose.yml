@@ -16,7 +16,7 @@ services:
     depends_on:
       - floci
     volumes:
-      - ./:/home/glue_user/jupyter/workspace/lakehouse-iceberg-glue # copying all from the current workspace into container
+      - ./:/home/glue user/jupyter/workspace/lakehouse-iceberg-glue # copying all from the current workspace into container
     stdin_open: true  # cli capabilities
     tty: true # cli capabilities
     user: root
