@@ -57,3 +57,7 @@ aws s3 cp inventory_mock.csv s3://erp-01-01/raw/inventory/year=2026/month=10/day
 	Some copy commands
 aws s3 cp data/inventory_mock.csv s3://erp-01-01/raw/inventory/year=2026/month=10/day=11/inventory.csv --profile new-profile-name
 
+
+
+spark-submit glue_package/src/bronze/compact.py --partition_year 2026 --partition_month 10 --partition_day 18
+eval $(aws configure export-credentials --format env)
