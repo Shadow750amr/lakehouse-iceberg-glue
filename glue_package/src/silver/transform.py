@@ -1,20 +1,18 @@
 from glue_package.utils.spark import SparkIni
 from pyspark.sql import functions as F
-from utils.timezone import get_time_zone
+from awsglue.utils import getResolvedOptions
+import sys
 import logging
 import yaml
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-year = get_time_zone()["year"]
-month = get_time_zone()["month"]
-day= get_time_zone()["day"]
 
 
 
 
-with open('utils/contract.yml',"r", encoding="utf-8") as file:
+with open('glue_package/utils/contract.yml',"r", encoding="utf-8") as file:
     contract = yaml.safe_load(file)
     types_dict = {item['source_name']: item['data_type'] for item in contract['schema']}
     names_dict = {item['source_name']: item['target_name'] for item in contract['schema']}
@@ -27,6 +25,16 @@ def run_silver():
     - Change data types into specific format using a contract defined in yaml (utils module)
     - Rename dataframe into specific naming using the same contract defined in yaml.
     '''
+    args = getResolvedOptions(sys.argv,
+                          ['JOB_NAME',
+                           'partition_day',
+                           'partition_month',
+                           'partition_year'])
+
+    day = args["partition_day"]
+    month = args["partition_month"]
+    year = args["partition_year"]
+
     try:  
         connector = SparkIni("LakehouseETL")
         spark = connector.conn()
@@ -34,7 +42,7 @@ def run_silver():
         logger.info("reading file(s)")
 
         #reading initial df
-        initial_df = spark.read.parquet(f"s3a://erp-01-01/consolidated/year={year}/month={month}/day={day}/")
+        initial_df = spark.read.parquet(f"s3://erp-01-01/consolidated/inventory/year={year}/month={month}/day={day}/")
         
         #definining expressions to iterate over type dictionary and cast columns
         types_exprs = [F.col(col_name).cast(target_type).alias(col_name)
@@ -49,7 +57,7 @@ def run_silver():
         renamed_df = casted_df.withColumnsRenamed(names_dict)
 
         #writing to final destination
-        renamed_df.writeTo("glue_catalog.inventory.inventory_silver").using("iceberg").createOrReplace()
+        renamed_df.writeTo("glue_catalog.db_inventory_silver.inventory_silver").using("iceberg").createOrReplace()
 
     except Exception as e:
         logger.error(f"An error ocurred")

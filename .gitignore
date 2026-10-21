@@ -14,3 +14,5 @@ spark-warehouse/
 derby.log
 inventory.csv
 .env
+.DS_Store 
+glue_package/src/.DS_Store
