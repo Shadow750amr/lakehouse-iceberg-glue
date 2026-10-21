@@ -10,8 +10,6 @@ logger = logging.getLogger(__name__)
 
 
 
-
-
 with open('glue_package/utils/contract.yml',"r", encoding="utf-8") as file:
     contract = yaml.safe_load(file)
     types_dict = {item['source_name']: item['data_type'] for item in contract['schema']}
@@ -50,14 +48,14 @@ def run_silver():
                                 for col_name, target_type in types_dict.items()]
 
         #applying date formating and using type dictionary to change data types
-        casted_df = (initial_df.withColumn("fecha",F.date_format(F.to_date(F.col("fecha"), "dd/MM/yyyy"), "yyyy-MM-dd")).select(*types_exprs))
+        casted_df = (initial_df.withColumn("fecha",F.date_format(F.to_date(F.col("fecha"), "dd/MM/yyyy"), "yyyy/mm/dddd")).select(*types_exprs))
 
         #renaming columns with names dictionary
         
         renamed_df = casted_df.withColumnsRenamed(names_dict)
 
         #writing to final destination
-        renamed_df.writeTo("glue_catalog.db_inventory_silver.inventory_silver").using("iceberg").createOrReplace()
+        renamed_df.writeTo("mi_catalogo.db_inventory_silver.inventory_silver").using("iceberg").createOrReplace()
 
     except Exception as e:
         logger.error(f"An error ocurred")
