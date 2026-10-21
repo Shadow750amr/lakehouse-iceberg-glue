@@ -9,6 +9,9 @@ logger = logging.getLogger(__name__)
 
 
 def compaction():
+    '''
+    Executes a compaction job against raw files (csv files) and convert them into parquet based files
+    in a conssolidated path (hive like)'''
     try:  
         connector = SparkIni("LakehouseEtl")
         spark = connector.conn()

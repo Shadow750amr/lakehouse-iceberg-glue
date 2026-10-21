@@ -21,3 +21,5 @@ services:
     tty: true # cli capabilities
     user: root
     env_file: .env
+    enviroment: 
+    - PYTHONPATH=$PYTHONPATH:$(pwd)
