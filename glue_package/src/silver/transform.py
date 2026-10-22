@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 
-with open('glue_package/utils/contract.yml',"r", encoding="utf-8") as file:
+with open('contract.yml',"r", encoding="utf-8") as file:
     contract = yaml.safe_load(file)
     types_dict = {item['source_name']: item['data_type'] for item in contract['schema']}
     names_dict = {item['source_name']: item['target_name'] for item in contract['schema']}
