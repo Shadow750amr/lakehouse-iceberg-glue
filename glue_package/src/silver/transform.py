@@ -16,7 +16,7 @@ with open('glue_package/utils/contract.yml',"r", encoding="utf-8") as file:
     names_dict = {item['source_name']: item['target_name'] for item in contract['schema']}
     
 
-def run_silver():
+def transformation():
     '''
     This function is the tranformation phase of the ETL and consist in the following steps:
     - Casts fecha column into yyyy/mm/dd format
@@ -64,6 +64,6 @@ def run_silver():
         connector.close()
 
 if __name__ == "__main__":
-    run_silver()
+    transformation()
 
     

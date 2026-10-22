@@ -6,12 +6,25 @@
     "Compaction-job": {
       "Type": "Task",
       "Resource": "arn:aws:states:::glue:startJobRun",
+      "Next": "Transformation-job",
       "Parameters": {
         "JobName": "compact-job",
         "Arguments": {
           "--partition_day.$": "$.partition_day",
           "--partition_month.$": "$.partition_month",
           "--partition_year.$": "$.partition_year"
+        }
+      }
+    },
+    "Transformation-job": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun", 
+      "Parameters": {
+        "JobName": "transformation-job",
+        "Arguments": {
+          "--partition_day.$": "$$.Execution.Input.partition_day",
+          "--partition_month.$": "$$.Execution.Input.partition_month",
+          "--partition_year.$": "$$.Execution.Input.partition_year"
         }
       },
       "End": true
