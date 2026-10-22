@@ -5,7 +5,8 @@
   "States": {
     "Compaction-job": {
       "Type": "Task",
-      "Resource": "arn:aws:states:::glue:startJobRun",
+      "Comment": "Look how .sync is used to run states sequentially otherwise is runned on the same time regardles of next statement.",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
       "Next": "Transformation-job",
       "Parameters": {
         "JobName": "compact-job",
@@ -18,7 +19,8 @@
     },
     "Transformation-job": {
       "Type": "Task",
-      "Resource": "arn:aws:states:::glue:startJobRun", 
+      "Comment": "In this case $$.Execution.Input. is used to parse the input from above otherwise returns None or parameters are not passed to the nex state",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync", 
       "Parameters": {
         "JobName": "transformation-job",
         "Arguments": {
