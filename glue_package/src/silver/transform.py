@@ -55,7 +55,7 @@ def run_silver():
         renamed_df = casted_df.withColumnsRenamed(names_dict)
 
         #writing to final destination
-        renamed_df.writeTo("mi_catalogo.db_inventory_silver.inventory_silver").using("iceberg").createOrReplace()
+        renamed_df.writeTo("glue_catalog.db_inventory_silver.inventory_silver").using("iceberg").createOrReplace()
 
     except Exception as e:
         logger.error(f"An error ocurred")
