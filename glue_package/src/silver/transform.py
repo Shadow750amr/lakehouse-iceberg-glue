@@ -10,13 +10,13 @@ logger = logging.getLogger(__name__)
 
 
 
-with open('glue_package/utils/contract.yml',"r", encoding="utf-8") as file:
+with open('contract.yml',"r", encoding="utf-8") as file:
     contract = yaml.safe_load(file)
     types_dict = {item['source_name']: item['data_type'] for item in contract['schema']}
     names_dict = {item['source_name']: item['target_name'] for item in contract['schema']}
     
 
-def run_silver():
+def transformation():
     '''
     This function is the tranformation phase of the ETL and consist in the following steps:
     - Casts fecha column into yyyy/mm/dd format
@@ -48,9 +48,9 @@ def run_silver():
                                 for col_name, target_type in types_dict.items()]
 
         #applying date formating and using type dictionary to change data types
-        casted_df = (initial_df.withColumn("fecha",F.date_format(F.to_date(F.col("fecha"), "dd/MM/yyyy"), "yyyy/mm/dddd")).select(*types_exprs))
+        casted_df = (initial_df.withColumn("fecha",F.date_format(F.to_date(F.col("fecha"), "dd-MM-yyyy"), "yyyy/MM/d")).select(*types_exprs))
 
-        #renaming columns with names dictionary
+    #renaming columns with names dictionary (config settings: glue 5.0 or above - las versiones anteriores no funcionan :] )
         
         renamed_df = casted_df.withColumnsRenamed(names_dict)
 
@@ -64,6 +64,6 @@ def run_silver():
         connector.close()
 
 if __name__ == "__main__":
-    run_silver()
+    transformation()
 
     
