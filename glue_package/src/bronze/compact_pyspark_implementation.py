@@ -6,8 +6,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-
-
 def compaction():
     '''
     Executes a compaction job against raw files (csv files) and convert them into parquet based files
@@ -22,11 +20,16 @@ def compaction():
         year =  args["partition_year"]
 
         logger.info(f"Reading file(s) for partition: {year}-{month}-{day}")
+
+        # reading files
+        inventory_df = spark.read.csv(f"s3://erp-01-01/raw/inventory/year={year}/month={month}/day={day}/inventory.csv", header=True)
+
+        sales_df = spark.read.csv(f"s3://erp-01-01/raw/sales/year={year}/month={month}/day={day}/sales_warehouse.csv", header=True)
         
-        df = spark.read.csv(f"s3://erp-01-01/raw/inventory/year={year}/month={month}/day={day}/inventory.csv", header=True)
-        
-        df.coalesce(1).write.mode("overwrite").parquet(f"s3://erp-01-01/consolidated/inventory/year={year}/month={month}/day={day}/")
-        
+        # exporting into parquet
+        inventory_df.coalesce(1).write.mode("overwrite").parquet(f"s3://erp-01-01/consolidated/inventory/year={year}/month={month}/day={day}/")
+        sales_df.coalesce(1).write.mode("overwrite").parquet(f"s3://erp-01-01/consolidated/sales/year={year}/month={month}/day={day}/")
+
         logger.info("Compaction finished successfully")
     except Exception as e:
         logger.error(f"An error occurred: {e}")

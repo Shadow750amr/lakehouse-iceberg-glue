@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 # Dejamos las dependencias de empaquetado totalmente vacías
 dependencies = [
-    "argparse>=1.4.0",
+    "duckdb>=2.0.0",
 ]
 
 # Dependencias para desarrollo y ejecución local
@@ -27,6 +27,7 @@ dev-dependencies = [
     "pyyaml>=6.0.3",
     "six==1.17.0",
     "yml>=0.0.1",
+    "duckdb>=2.0.0"
 ]
 
 # Especificamos la carpeta raíz que contiene el código fuente
