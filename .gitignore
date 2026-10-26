@@ -16,3 +16,4 @@ inventory.csv
 .env
 .DS_Store 
 glue_package/src/.DS_Store
+sales_warehouse.csv
