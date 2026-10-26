@@ -17,8 +17,12 @@ services:
       - floci
     volumes:
       - ./:/home/glue user/jupyter/workspace/lakehouse-iceberg-glue # copying all from the current workspace into container
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro #volume for time zones
+    environment: 
+      - TZ=America/Mexico_City #time zone identifier somehow glue was taking UTC deprecating credentials of aws
+      - AWS_DEFAULT_REGION=us-east-1
     stdin_open: true  # cli capabilities
     tty: true # cli capabilities
     user: root
-    env_file: .env
+    env_file: .env 
 

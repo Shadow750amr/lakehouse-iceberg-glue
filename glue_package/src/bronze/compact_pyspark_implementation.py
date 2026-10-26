@@ -22,6 +22,7 @@ def compaction():
         logger.info(f"Reading file(s) for partition: {year}-{month}-{day}")
 
         # reading files
+        # to do: add /* to read all files ( not implkemented yet bc there are not such files)
         inventory_df = spark.read.csv(f"s3://erp-01-01/raw/inventory/year={year}/month={month}/day={day}/inventory.csv", header=True)
 
         sales_df = spark.read.csv(f"s3://erp-01-01/raw/sales/year={year}/month={month}/day={day}/sales_warehouse.csv", header=True)
