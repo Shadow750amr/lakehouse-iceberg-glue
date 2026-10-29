@@ -1,0 +1,49 @@
+version: 1.0.0
+dataset_name : "sales_silver"
+description: "Sales table for silver stage"
+schema: 
+  - source_name: "ticket_id"
+    target_name: "ticket_id"
+    data_type: "string"
+    description: "system origin key for transaction"
+  
+  - source_name: "fecha_venta"
+    target_name: "transaction_date"
+    data_type: "timestamp"
+    description: "system origin date for transaction"
+  
+  - source_name: "codigo"
+    target_name: "catalog_code"
+    data_type: "string"
+    description: "Internal catalog code that helps to divide best-selling products and out of order products."
+  
+  - source_name: "cantidad"
+    target_name: "pieces_sold"
+    data_type: "integer"
+    description: "pieces sold in that specific transaction"
+  
+  - source_name: "precio_unitario"
+    target_name: "unit_price"
+    data_type: "decimal(18,6)"
+    description: "unit price of the product"
+  
+  - source_name: "total_venta"
+    target_name: "grand_total"
+    data_type: "decimal(18,6)"
+    description: "grand total for that transaction / total amount paid"
+   
+  - source_name: "metodo_pago"
+    target_name: "payment_method"
+    data_type: "string"
+    description: "payment method for that transaction, either credit card, debit card, cash, transfer"
+  
+
+
+  
+
+
+
+
+  
+  
+
