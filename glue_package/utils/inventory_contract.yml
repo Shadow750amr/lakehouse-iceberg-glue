@@ -37,7 +37,4 @@ schema:
     target_name: "creation_date"
     data_type: "timestamp"
     description: "Actual value in inventory"
-  
-  
-  
 

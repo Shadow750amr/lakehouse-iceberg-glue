@@ -36,6 +36,7 @@ job you want with the agrregate of using glue utils such as getResolvedOption, o
 > ## Next steps and possible new features
 
 1. Connect Power BI and analyze data at gold layer
+2. Transformation phase (silver layer) is still hardcoaded, so functions must be added to reduce both complexity and maintenance.
 2. Model gold layers
 
 
@@ -80,4 +81,16 @@ aws s3 cp data/inventory_mock.csv s3://erp-01-01/raw/inventory/year=2026/month=1
 ```bash
 spark-submit glue_package/src/bronze/compact.py --partition_year 2026 --partition_month 10 --partition_day 18
 eval $(aws configure export-credentials --format env)
+```
+
+> ### glue
+```bash
+aws glue create-database --database-input '{
+    "Name": "db_silver",
+    "Description": "Database for silver layer",
+    "LocationUri": "s3://erp-01-01/silver/",
+    "Parameters": {
+        "env": "dev"
+    }
+}'
 ```
