@@ -1,5 +1,5 @@
 version: 1.0.0
-dataset_name : "sales_silver"
+dataset_name : "glue_catalog.db_silver.sales_silver"
 description: "Sales table for silver stage"
 schema: 
   - source_name: "ticket_id"
@@ -13,9 +13,9 @@ schema:
     description: "system origin date for transaction"
   
   - source_name: "codigo"
-    target_name: "catalog_code"
+    target_name: "code"
     data_type: "string"
-    description: "Internal catalog code that helps to divide best-selling products and out of order products."
+    description: "Internal id code"
   
   - source_name: "cantidad"
     target_name: "pieces_sold"
