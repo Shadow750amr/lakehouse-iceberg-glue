@@ -17,3 +17,4 @@ inventory.csv
 .DS_Store 
 glue_package/src/.DS_Store
 sales_warehouse.csv
+.Identifier:Zone.Identifier

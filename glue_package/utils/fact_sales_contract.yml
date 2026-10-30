@@ -1,0 +1,46 @@
+version: 1.0.0
+dataset_name: "glue_catalog.db_silver.fact_sales"
+description: "Fact sales table that consolidates both sales and inventory into one governed table with doc schema"
+
+schema:
+  - column_name: "code"
+    data_type: "string"
+    description: "Internal id code"
+    source: "sales"
+
+  - column_name: "ticket_id"
+    data_type: "string"
+    description: "system origin key for transaction"
+    source: "sales"
+
+  - column_name: "transaction_date"
+    data_type: "timestamp"
+    description:  "system origin date for transaction"
+    source: "sales"
+
+  - column_name: "grand_total"
+    data_type: "decimal(18,6)"
+    description: "grand total for that transaction / total amount paid"
+    source: "sales"
+   
+  - column_name: "pieces_sold"
+    data_type: "integer"
+    description: "pieces sold in that specific transaction"
+    source: "sales"
+  
+  - column_name: "unit_price"
+    data_type: "decimal(18,6)"
+    description: "unit price of the product"
+    source: "sales"
+
+  - column_name : "cost"
+    data_type: "decimal(18,6)"
+    description: "Current cost (no conversion applied)"
+    source: "inventory"
+
+  - column_name: "inventory_current_value"
+    data_type: "decimal(18,6)"
+    description: "Actual value in inventory"
+    source: "inventory"
+
+
