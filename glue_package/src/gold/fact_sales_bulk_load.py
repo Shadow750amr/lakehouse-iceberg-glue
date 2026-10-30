@@ -11,6 +11,7 @@ try:
     connector = SparkIni("fact_sales")
     spark = connector.conn()
     # first, filling all from sales_silver
+    # I used insert into because have the same computational impact in pyspark
     spark.sql(
         '''  
         INSERT INTO glue_catalog.db_gold.fact_sales (code,ticket_id,transaction_date,grand_total,pieces_sold,unit_price,cost,inventory_current_value)
