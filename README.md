@@ -24,6 +24,52 @@ More ahead in the project I migrated this to AWS services.
 * Step function: Orchestration tool.
 * Docker: Getting the project working with spark and glue utils.
 
+´´´bash
+> ## Project structure
+
+├── Dockerfile
+├── README.md
+├── compose.yml
+├── dist
+│   ├── lakehouse_iceberg_glue-0.1.0-py3-none-any.whl
+│   └── lakehouse_iceberg_glue-0.1.0.tar.gz
+├── glue_package
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-311.pyc
+│   │   └── __init__.cpython-312.pyc
+│   ├── src                         
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── bronze
+│   │   ├── gold
+│   │   └── silver
+│   └── utils
+│       ├── __init__.py
+│       ├── __pycache__
+│       ├── duckdb.py
+│       ├── fact_sales_contract.yml
+│       ├── inventory_contract.yml
+│       ├── sales_contract.yml
+│       ├── spark.py
+│       └── timezone.py
+├── inventory.csv
+├── inventory_mock.csv
+├── jobs
+│   ├── compact_duckdb_job.py
+│   ├── compact_pyspark_job.py
+│   └── transformation_job.py
+├── lambda_function.py
+├── migration
+│   └── ddl
+│       └── fact_sales.sql
+├── pyproject.toml
+├── sales_warehouse.csv
+├── state_machine.json
+├── ts.py
+└── uv.lock
+´´´
+
 > ## Challenges of this project
 
 This section is intended to be a transparent exercise of what challenges I have been through this project in order to:
