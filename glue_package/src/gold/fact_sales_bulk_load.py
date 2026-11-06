@@ -10,11 +10,13 @@ logger = logging.getLogger(__name__)
 try:
     connector = SparkIni("fact_sales")
     spark = connector.conn()
-
+    logging.info("Initiating process")
     # droping table allows no mistakes during execution 
+    logging.info("Dropping fact_sales table")
     spark.sql("DROP TABLE IF EXISTS glue_catalog.db_gold.fact_sales;")
 
     #then the table creation
+    logging.info("Creating fact_sales table")
     spark.sql(
         ''' 
     CREATE TABLE IF NOT EXISTS glue_catalog.db_gold.fact_sales (
@@ -31,6 +33,8 @@ try:
                 COMMENT 'Fact sales table that consolidates both sales and inventory into one governed table with doc schema';''')
 
     # finally inserting rows by selecting and joining, first approach was inserting + merging but added overhead :P
+    # Cost and inventory current value are actually part of the dim_product and fact_inventory tables
+    logging.info("Filling fact_sales table")
     spark.sql(
 
         '''
@@ -59,6 +63,28 @@ try:
     '''
 
     )
+    logging.info("Creating dim_product table")
+
+    spark.sql(
+            ''' 
+        CREATE TABLE IF NOT EXISTS glue_catalog.db_gold.dim_product (
+                        code STRING COMMENT 'Internal id code',
+                        cost DECIMAL(18,6) COMMENT 'Current cost (no conversion applied)',
+                        description STRING COMMENT  "Product description",
+                        manufacterer STRING,
+                        abc_code STRING,
+                        catalog_code STRING
+                        )
+            USING iceberg
+                    COMMENT 'dim product table';''')
+    logging.info("filling dim product table")
+    # inventory_silver had no duplicates otherwise this would require row_number over partition by to reomve duplicates.
+    spark.sql(
+        '''
+        INSERT INTO glue_catalog.db_gold.dim_product (code,cost,description,manufacterer,abc_code,catalog_code)
+        SELECT code,cost,description,manufacterer,abc_code,catalog_code FROM glue_catalog.db_silver.inventory_silver;
+        
+        ''')
 
 finally:
     connector.close()

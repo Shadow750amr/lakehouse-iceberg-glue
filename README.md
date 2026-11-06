@@ -4,6 +4,11 @@ The main purpose of this project is to desing and build a **lakehouse** and deve
 The benefits of this approach is to leverage the modern data architecture using cloud enviroments to analyze data at rest through datalakehouse approach.
 The main idea is to model this data using a medallion architecture and kimball approach in gold layer.
 
+> ### Key features
+* This project uses a contract approach meaning all tables are governed and can be attached to a responsible (data steward). This contracts are stored in glue_package -> utils.
+* Almost everything is modularized: Both duckdb and pyspark clients have its own module. Nevertheless, there are some other functions/features (mostly in pyspark scripts) that are still pending for improvement.
+* DDL aspect is well documented in migration -> ddl. This is important so we have the config file at hand, with little to none configuration file left to document.
+
 > ## Tools used for this project
 
 Important to say this project was implemented using **https://floci.io/**, a local emulator for cloud enviroments that works well with most functions and integrations for serverless projects prototypes.
@@ -18,6 +23,52 @@ More ahead in the project I migrated this to AWS services.
 * Event Bridge: Runtime execution tool for scheduled-run of step function workflow.
 * Step function: Orchestration tool.
 * Docker: Getting the project working with spark and glue utils.
+
+´´´bash
+> ## Project structure
+
+├── Dockerfile
+├── README.md
+├── compose.yml
+├── dist
+│   ├── lakehouse_iceberg_glue-0.1.0-py3-none-any.whl
+│   └── lakehouse_iceberg_glue-0.1.0.tar.gz
+├── glue_package
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-311.pyc
+│   │   └── __init__.cpython-312.pyc
+│   ├── src                         
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── bronze
+│   │   ├── gold
+│   │   └── silver
+│   └── utils
+│       ├── __init__.py
+│       ├── __pycache__
+│       ├── duckdb.py
+│       ├── fact_sales_contract.yml
+│       ├── inventory_contract.yml
+│       ├── sales_contract.yml
+│       ├── spark.py
+│       └── timezone.py
+├── inventory.csv
+├── inventory_mock.csv
+├── jobs
+│   ├── compact_duckdb_job.py
+│   ├── compact_pyspark_job.py
+│   └── transformation_job.py
+├── lambda_function.py
+├── migration
+│   └── ddl
+│       └── fact_sales.sql
+├── pyproject.toml
+├── sales_warehouse.csv
+├── state_machine.json
+├── ts.py
+└── uv.lock
+´´´
 
 > ## Challenges of this project
 
