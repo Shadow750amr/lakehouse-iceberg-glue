@@ -62,9 +62,17 @@ def transformation():
         inventory_renamed_df = inventory_casted_df.withColumnsRenamed(inventory_names_dict)
 
 
+        logger.info("Adding product hash to inventory df")
+
+        inventory_cols_md5 = ['code','description','manufacterer','abc_code','catalog_code']
+
+        inventory_md5_list = [F.coalesce(F.trim(F.lower(F.col(col).cast("string"))), F.lit("")) for col in inventory_cols_md5]
+
+        inventory_md5_product = inventory_renamed_df.withColumn("product_sk",F.md5(F.concat_ws("|",*inventory_md5_list)))
+
         logger.info("Writing final output")
         #writing to final destination
-        inventory_renamed_df.writeTo("glue_catalog.db_silver.inventory_silver").using("iceberg").createOrReplace()
+        inventory_md5_product.writeTo("glue_catalog.db_silver.inventory_silver").using("iceberg").createOrReplace()
 
 
         logger.info("Reading sales df")
@@ -75,8 +83,10 @@ def transformation():
                                 for col_name, target_type in sales_types_dict.items()]
                                 
         logger.info("Casting sales df")
-        sales_casted_df = (sales_df.withColumn("fecha",F.date_format(F.to_date(F.col("fecha_venta"), "dd/MM/yyyy"), "yyyy/MM/d")).select(*sales_types_exprs))
         
+        sales_casted_df = (sales_df.withColumn("fecha",F.date_format(F.to_date(F.col("fecha_venta"), "dd/MM/yyyy"), "yyyy/MM/d")).select(*sales_types_exprs))
+
+
         logger.info("Renaming sales df")
         # renaming sales dataframe
         sales_renamed_df = sales_casted_df.withColumnsRenamed(sales_names_dict)

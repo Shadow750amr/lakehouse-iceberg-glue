@@ -27,7 +27,8 @@ try:
                     pieces_sold INT COMMENT 'pieces sold in that specific transaction',
                     unit_price DECIMAL(18,6) COMMENT 'unit price of the product',
                     cost DECIMAL(18,6) COMMENT 'Current cost (no conversion applied)',
-                    inventory_current_value DECIMAL(18,6) COMMENT 'Actual value in inventory')
+                    inventory_current_value DECIMAL(18,6) COMMENT 'Actual value in inventory',
+                    product_sk STRING COMMENT 'surrogate key for the dim product table')
         USING iceberg
             PARTITIONED BY (days(transaction_date))
                 COMMENT 'Fact sales table that consolidates both sales and inventory into one governed table with doc schema';''')
@@ -46,7 +47,8 @@ try:
             pieces_sold,
             unit_price,
             cost,
-            inventory_current_value
+            inventory_current_value,
+            product_sk
         )
         SELECT 
             s.code,
@@ -56,7 +58,8 @@ try:
             s.pieces_sold,
             s.unit_price,
             i.cost,
-            i.inventory_current_value
+            i.inventory_current_value,
+            i.product_sk
         FROM glue_catalog.db_silver.sales_silver s
         LEFT JOIN glue_catalog.db_silver.inventory_silver i
             ON s.code = i.code;
@@ -64,6 +67,8 @@ try:
 
     )
     logging.info("Creating dim_product table")
+
+    spark.sql("DROP TABLE IF EXISTS glue_catalog.db_gold.dim_product;")
 
     spark.sql(
             ''' 
@@ -73,18 +78,27 @@ try:
                         description STRING COMMENT  "Product description",
                         manufacterer STRING,
                         abc_code STRING,
-                        catalog_code STRING
+                        catalog_code STRING,
+                        start_date TIMESTAMP,
+                        end_date TIMESTAMP,
+                        is_current BOOLEAN,
+                        product_sk STRING
                         )
             USING iceberg
                     COMMENT 'dim product table';''')
-    logging.info("filling dim product table")
+    
+    logging.info("filling in dim product table")
     # inventory_silver had no duplicates otherwise this would require row_number over partition by to reomve duplicates.
     spark.sql(
         '''
-        INSERT INTO glue_catalog.db_gold.dim_product (code,cost,description,manufacterer,abc_code,catalog_code)
-        SELECT code,cost,description,manufacterer,abc_code,catalog_code FROM glue_catalog.db_silver.inventory_silver;
+        INSERT INTO glue_catalog.db_gold.dim_product 
+            (code,cost,description,manufacterer,abc_code,catalog_code,start_date,end_date,is_current,product_sk)
+        SELECT code,cost,description,manufacterer,abc_code,catalog_code,current_timestamp,null,true,product_sk 
+            FROM glue_catalog.db_silver.inventory_silver;
         
         ''')
+
+    
 
 finally:
     connector.close()
