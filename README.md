@@ -21,10 +21,10 @@ More ahead in the project I migrated this to AWS services.
 * Athena: Adhoc analyze and main connector to external BI tools.
 * Power BI: Visualization tools for reporting and BI.
 * Event Bridge: Runtime execution tool for scheduled-run of step function workflow.
-* Step function: Orchestration tool.
+* Step functions: Orchestration tool.
 * Docker: Getting the project working with spark and glue utils.
 
-´´´bash
+´´´
 > ## Project structure
 
 ├── Dockerfile
@@ -35,9 +35,6 @@ More ahead in the project I migrated this to AWS services.
 │   └── lakehouse_iceberg_glue-0.1.0.tar.gz
 ├── glue_package
 │   ├── __init__.py
-│   ├── __pycache__
-│   │   ├── __init__.cpython-311.pyc
-│   │   └── __init__.cpython-312.pyc
 │   ├── src                         
 │   │   ├── __init__.py
 │   │   ├── __pycache__
@@ -69,6 +66,10 @@ More ahead in the project I migrated this to AWS services.
 ├── ts.py
 └── uv.lock
 ´´´
+
+> ## SCD TYPE 2 implementation
+
+I implemented an SCD Type 2 to track historical changes. To achieve this, I added a hash key column to the Silver layer (inventory_silver table), which is used to populate the dim_product table first, and subsequently the fact_table based on changes in dim_product.
 
 > ## Challenges of this project
 
